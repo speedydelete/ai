@@ -11,10 +11,11 @@ with open('words.txt') as file:
 
 def tokenize(text: str) -> list[int]:
     out = []
+    text = text.lower()
     for word in text.split(' '):
         if word == '':
             out.append(160)
-        elif word.isalpha() and word in words:
+        elif word in words:
             out.append(words.index(word) + 1024)
         elif word in core_tokens:
             out.append(core_tokens.index(word) + 2)

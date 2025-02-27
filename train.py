@@ -12,9 +12,10 @@ ai = GPT(
 )
 ai.load('87m.keras')
 
-with open(sys.argv[2], 'r', encoding='utf-8') as file:
+with open('openwebtext.txt', 'r', encoding='utf-8') as file:
     text = file.read()
 
-ai.train(text.split('\n\n')[0:10000], epochs=2, verbose=1)
+ai.train(text.split('\n\n')[0:10000], epochs=1, verbose=1)
+# ai.train(text.split('\n\n'), epochs=10, verbose=1)
 
 ai.save('87m.keras')
