@@ -1,0 +1,7 @@
+venv
+__pycache__
+training_data.txt
+words.txt
+openwebtext.txt
+token.txt
+*.keras
