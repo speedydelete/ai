@@ -37,18 +37,25 @@ def tokenize(text: str) -> list[int]:
 def detokenize(data: list[int]) -> str:
     out = ''
     for token in data:
-        if token == 1:
-            out += '[unknown]'
-        elif token >= 128 and token < 256:
-            out += chr(token - 128)
-        elif token >= 256 and token < 512:
-            out += chr(token - 256)
-        elif token >= 512 and token < 768:
-            if len(out) > 0:
-                out = out[:-1] + chr(ord(out[-1]) + (token - 512) * 256)
-        elif token > 768 and token < 1024:
-            if len(out) > 0:
-                out = out[:-1] + chr(ord(out[-1]) + ((token - 768) % 17) * 65536)
-        elif token >= 1024 and token < 1024 + len(words):
-            out += ' ' + words[token - 1024]
+        if token == 160:
+            out += ' '
+        elif words[token - 1024] and token - 1024 >= 0:
+            out += words[token - 1024]
+        elif core_tokens[token - 2] and token - 2 >= 0:
+            out += core_tokens[token - 2]
+        else:
+            if token >= 128 and token < 256:
+                out += chr(token - 128)
+            elif token >= 256 and token < 512:
+                out += chr(token - 256)
+            elif token >= 512 and token < 768:
+                if len(out) > 0:
+                    out = out[:-1] + chr(ord(out[-1]) + (token - 512) * 256)
+            elif token > 768 and token < 1024:
+                if len(out) > 0:
+                    out = out[:-1] + chr(ord(out[-1]) + ((token - 768) % 17) * 65536)
+            elif token >= 1024 and token < 1024 + len(words):
+                out += ' ' + words[token - 1024]
+            else:
+                out += '[UNKNOWN]'
     return out.encode('utf-16').decode('utf-16')
